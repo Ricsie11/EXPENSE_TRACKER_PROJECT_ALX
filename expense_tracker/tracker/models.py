@@ -8,6 +8,7 @@ class Category(models.Model):
         ('income', 'Income'),
         ('expense', 'Expense'),
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
@@ -16,9 +17,9 @@ class Category(models.Model):
 
 
 class Expense(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount (NGN)')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
 
@@ -27,7 +28,7 @@ class Expense(models.Model):
 
 
 class Income(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='incomes')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True) 
     description = models.TextField(blank=True, null=True)
