@@ -5,6 +5,7 @@ from .views import (
     ExpenseListCreateView, ExpenseDetailView,
     IncomeListCreateView, IncomeDetailView,
     CategoryListCreateView, CategoryDetailView,
+    SummaryView, CategorySummaryView
 )
 
 #Write your urls here
@@ -25,4 +26,10 @@ urlpatterns = [
     #Category Endpoints
     path('category/', CategoryListCreateView.as_view(), name='category-list-create'),
     path('category/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'), 
+
+    #Summary Endpoint
+    path('summary/', SummaryView.as_view(), name='summary'),
+
+    #Summary by category Endpoint
+    path('category/summary/', CategorySummaryView.as_view(), name='category-summary')
 ]

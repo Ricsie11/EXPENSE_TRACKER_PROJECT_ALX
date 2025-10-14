@@ -5,10 +5,13 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .serializers import ExpenseSerializer, CategorySerializer, IncomeSerializer, RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from .models import Income, Expense
+from django.db.models import Sum
 
 
 # Create your views here.
 class SignupAPIView(APIView):
+    #...Used try/except should incase the user gets an error while registering
     def post(self, request):
         try:
             serializer = RegisterSerializer(data=request.data)
@@ -80,3 +83,38 @@ class CategoryDetailView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):  #....Gets all category of the authenticated user
         return self.request.user.categories.all()
+    
+
+#..A summary view to get a users total spendings or savings.
+class SummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        #..Utilising Django's ORM to calc total income and expense
+        total_income = Income.objects.filter(user=user).aggregate(total=Sum('amount'))['total'] or 0
+        total_expense = Expense.objects.filter(user=user).aggregate(total=Sum('amount'))['total'] or 0
+        balance = total_income - total_expense
+
+        return Response({
+            "total_income": total_income,
+            "total_expense": total_expense,
+            "balance": balance
+        })
+    
+#..A Category summary view to get users total expense or income
+class CategorySummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        #..Get each category name from Expense and group them for total calculation
+        expense_summary = Expense.objects.filter(user=request.user).values('category__name').annotate(total=Sum('amount'))
+        income_summary = Income.objects.filter(user=request.user).values('category__name').annotate(total=Sum('amount'))
+
+        return Response({
+            "incomes": income_summary,
+            "expenses": expense_summary
+        })
