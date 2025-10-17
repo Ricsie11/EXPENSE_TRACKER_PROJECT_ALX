@@ -17,9 +17,12 @@ class Category(models.Model):
 
 
 class Expense(models.Model):
+    class Meta:
+        ordering = ['-date']
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expenses')
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount (NGN)')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    # This keeps expense data even if a category is removed.
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True, related_name='expenses')
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
 
@@ -28,9 +31,12 @@ class Expense(models.Model):
 
 
 class Income(models.Model):
+    class Meta:
+        ordering = ['-date']
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='incomes')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True) 
+    # This keeps income data even if a category is removed.
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True, related_name='incomes') 
     description = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
 

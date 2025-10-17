@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from .models import Income, Expense
 from django.db.models import Sum
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -29,7 +30,9 @@ class SignupAPIView(APIView):
 #Expense ListCreateView
 class ExpenseListCreateView(ListCreateAPIView):
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated] #Authenticates a
+    permission_classes = [IsAuthenticated] 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['amount', 'category', 'date']
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user) # Saves any expense instance created by a user
@@ -49,6 +52,8 @@ class ExpenseDetailView(RetrieveUpdateDestroyAPIView):
 class IncomeListCreateView(ListCreateAPIView):
     serializer_class = IncomeSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['amount', 'category', 'date']
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user) # Saves any Income instance created by a user
