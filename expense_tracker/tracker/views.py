@@ -197,5 +197,13 @@ class CategorySummaryView(APIView):
         })
 
 
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+
+def create_admin(request):
+    if User.objects.filter(username='admin').exists():
+        return JsonResponse({'message': 'Admin already exists'})
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+    return JsonResponse({'message': 'Admin user created successfully'})
 
 
