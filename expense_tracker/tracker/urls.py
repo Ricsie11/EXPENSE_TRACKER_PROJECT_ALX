@@ -35,5 +35,5 @@ urlpatterns = [
     #Summary by category Endpoint
     path('category/summary/', CategorySummaryView.as_view(), name='category-summary'),
 
-    path('create-admin/', views.create_admin),
+    path('create-admin/', views.create_admin)
 ]
