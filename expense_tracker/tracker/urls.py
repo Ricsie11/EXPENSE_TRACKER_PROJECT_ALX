@@ -7,6 +7,8 @@ from .views import (
     CategoryListCreateView, CategoryDetailView,
     SummaryView, CategorySummaryView
 )
+from . import views
+
 
 #Write your urls here
 urlpatterns = [
@@ -31,5 +33,7 @@ urlpatterns = [
     path('summary/', SummaryView.as_view(), name='summary'),
 
     #Summary by category Endpoint
-    path('category/summary/', CategorySummaryView.as_view(), name='category-summary')
+    path('category/summary/', CategorySummaryView.as_view(), name='category-summary'),
+
+    path('create-admin/', views.create_admin),
 ]
