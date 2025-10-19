@@ -3,8 +3,8 @@ services:
     plan: free
     name: expense-tracker-web
     runtime: python
-    buildCommand: "cd expense_tracker && pip install -r requirements.txt && python manage.py migrate"
-    startCommand: "cd expense_tracker && gunicorn expense_tracker.wsgi:application"
+    buildCommand: "cd expense_tracker && pip install -r ../requirements.txt && python manage.py migrate"
+    startCommand: "cd expense_tracker && gunicorn --pythonpath . expense_tracker.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -12,5 +12,5 @@ services:
         value: false
       - key: DATABASE_URL
         sync: false
-      - key: PYTHONPATH
-        value: expense_tracker
+      - key: DJANGO_SETTINGS_MODULE
+        value: expense_tracker.settings
