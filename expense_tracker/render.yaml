@@ -3,10 +3,15 @@ services:
     plan: free
     name: expense-tracker-web
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python expense_tracker/manage.py migrate"
-    startCommand: "gunicorn expense_tracker.wsgi:application"
+    rootDirectory: expense_tracker
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "cd expense_tracker && gunicorn --chdir . expense_tracker.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
         value: false
+      - key: DATABASE_URL
+        sync: false
+      - key: PYTHON_PATH
+        value: expense_tracker
