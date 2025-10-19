@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
@@ -21,6 +21,7 @@ from .models import Income, Expense
 # ==========================================================
 
 class SignupAPIView(APIView):
+    permission_classes = [AllowAny]
     """
     Handle user registration.
     Returns JWT access & refresh tokens upon successful registration.

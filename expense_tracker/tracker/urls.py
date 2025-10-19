@@ -7,7 +7,6 @@ from .views import (
     CategoryListCreateView, CategoryDetailView,
     SummaryView, CategorySummaryView
 )
-from . import views
 
 
 #Write your urls here

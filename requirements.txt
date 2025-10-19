@@ -8,6 +8,7 @@ psycopg2-binary==2.9.11
 python-dotenv==1.1.1
 gunicorn==23.0.0
 mysqlclient==2.2.7
+Markdown==3.9
 
 
 # Postgres driver (needed if you use Postgres DATABASE_URL)
