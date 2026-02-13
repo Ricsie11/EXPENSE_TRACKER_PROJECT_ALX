@@ -1,0 +1,23 @@
+{
+  "cSpell.words": [
+    "asgiref",
+    "certifi",
+    "corsheaders",
+    "distlib",
+    "djangorestframework",
+    "dotenv",
+    "filterset",
+    "gunicorn",
+    "mysqlclient",
+    "ninm",
+    "onrender",
+    "pipenv",
+    "platformdirs",
+    "psycopg",
+    "setuptools",
+    "simplejwt",
+    "sqlparse",
+    "tzdata",
+    "virtualenv"
+  ]
+}

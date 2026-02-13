@@ -2,7 +2,6 @@
 
 A simple personal expense/income tracker built with Django REST Framework. The API supports user registration, JWT authentication, CRUD operations for expenses, incomes and categories, and summary endpoints (total income, total expense, balance, and category breakdown).
 
-
 ## Features
 
 - User registration with JWT token generation (access & refresh)
@@ -20,7 +19,6 @@ A simple personal expense/income tracker built with Django REST Framework. The A
 - django-filter
 - dj-database-url (used for parsing DATABASE_URL in settings)
 - python-decouple (for environment config)
-
 
 ## Environment variables
 
@@ -73,32 +71,38 @@ python manage.py test
 The application mounts the tracker API under `api/v1.0/`.
 
 Authentication:
+
 - POST `api/v1.0/signup/` — register a new user. Request body: {"username":"...","email":"...","password":"..."}. Returns `refresh` and `access` tokens.
 - POST `api/v1.0/login/` — obtain JWT tokens (use `rest_framework_simplejwt.views.TokenObtainPairView`). Body: {"username":"...","password":"..."}
 - POST `api/v1.0/token/refresh/` — refresh access token using the refresh token.
 
 Expenses:
+
 - GET `api/v1.0/expenses/` — list authenticated user's expenses (paginated)
 - POST `api/v1.0/expenses/` — create expense ({"amount","category","description","date"})
 - GET/PUT/DELETE `api/v1.0/expenses/<id>/` — retrieve, update or delete a specific expense
 
 Incomes:
+
 - GET `api/v1.0/incomes/` — list incomes
 - POST `api/v1.0/incomes/` — create income
 - GET/PUT/DELETE `api/v1.0/incomes/<id>/` — retrieve, update or delete income
 
 Categories:
+
 - GET `api/v1.0/categories/` — list categories
 - POST `api/v1.0/categories/` — create category ({"name","type"})
 - GET/PUT/DELETE `api/v1.0/categories/<id>/` — manage a category
 
 Summaries:
+
 - GET `api/v1.0/summary/` — returns total_income, total_expense, balance for the authenticated user
 - GET `api/v1.0/category/summary/` — returns income and expense totals broken down by category
 
 Admin:
+
 - GET `admin/` — Django admin site (create a superuser to access)
-- Utility endpoint: `api/v1.0/create-admin/` — creates a default admin user with username `admin` and password `admin123` (use carefully; consider removing in production)
+- GET `admin/` — Django admin site (create a superuser to access)
 
 ## Example: Register and use access token
 
@@ -119,4 +123,3 @@ curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://127.0.0.1:8000/api/v1.0/ex
 - Security: The `create-admin/` view creates a default admin with a hard-coded password; remove or protect it before deploying to production.
 - Add automated tests for serializers, views, and permission checks.
 - Add request/response examples and a Postman or OpenAPI/Swagger spec for easier integration.
-

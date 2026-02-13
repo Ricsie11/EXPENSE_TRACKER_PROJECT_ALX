@@ -28,10 +28,10 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 # Allow all hosts (you can later restrict this to your Render domain)
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["expense-tracker-ninm.onrender.com"]
 
 # Allow Render domain for CSRF protection
-CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://expense-tracker-ninm.onrender.com"]
 
 # ===========================
 # 🧩 INSTALLED APPS
@@ -51,12 +51,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
+    'corsheaders',
 ]
 
 # ===========================
 # ⚙️ MIDDLEWARE
 # ===========================
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -95,7 +97,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=config("DATABASE_URL"),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=config("DB_SSL_REQUIRE", default=True, cast=bool)
     )
 }
 
@@ -145,6 +147,11 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+# ===========================
+# 🌐 CORS SETTINGS
+# ===========================
+CORS_ALLOW_ALL_ORIGINS = True
 
 # ===========================
 # ⚙️ DEFAULT PRIMARY KEY
