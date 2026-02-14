@@ -97,7 +97,10 @@ DATABASES = {
     'default': dj_database_url.config(
         default=config("DATABASE_URL"),
         conn_max_age=600,
-        ssl_require=config("DB_SSL_REQUIRE", default=True, cast=bool)
+        ssl_require=config("DB_SSL_REQUIRE", default=True, cast=bool),
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     )
 }
 
