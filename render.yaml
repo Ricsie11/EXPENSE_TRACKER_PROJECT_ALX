@@ -3,8 +3,8 @@ services:
     plan: free
     name: expense-tracker-web
     runtime: python
-    buildCommand: "cd expense_tracker && pip install -r ../requirements.txt && python manage.py migrate && python manage.py collectstatic --no-input"
-    startCommand: "cd expense_tracker && gunicorn --pythonpath . expense_tracker.wsgi:application"
+    buildCommand: "pip install -r requirements.txt && cd expense_tracker && python manage.py migrate && python manage.py collectstatic --no-input"
+    startCommand: "gunicorn --chdir expense_tracker expense_tracker.wsgi:application"
     envVars:
       - key: SECRET_KEY
         generateValue: true
