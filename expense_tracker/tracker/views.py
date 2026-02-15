@@ -76,7 +76,7 @@ class ExpenseListCreateView(ListCreateAPIView):
 
     def get_queryset(self):
         # Return only the authenticated user's expenses
-        return self.request.user.expenses.all()
+        return Expense.objects.filter(user=self.request.user)
 
 
 class ExpenseDetailView(RetrieveUpdateDestroyAPIView):
@@ -90,7 +90,7 @@ class ExpenseDetailView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         # Restrict access to user's own expenses
-        return self.request.user.expenses.all()
+        return Expense.objects.filter(user=self.request.user)
 
 
 # ==========================================================
@@ -112,7 +112,7 @@ class IncomeListCreateView(ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return self.request.user.incomes.all()
+        return Income.objects.filter(user=self.request.user)
 
 
 class IncomeDetailView(RetrieveUpdateDestroyAPIView):
@@ -124,7 +124,7 @@ class IncomeDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return self.request.user.incomes.all()
+        return Income.objects.filter(user=self.request.user)
 
 
 # ==========================================================
@@ -144,7 +144,7 @@ class CategoryListCreateView(ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return self.request.user.categories.all()
+        return Category.objects.filter(user=self.request.user)
 
 
 class CategoryDetailView(RetrieveUpdateDestroyAPIView):
@@ -156,7 +156,7 @@ class CategoryDetailView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return self.request.user.categories.all()
+        return Category.objects.filter(user=self.request.user)
 
 
 # ==========================================================

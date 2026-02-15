@@ -47,12 +47,15 @@ class UserSerializer(serializers.ModelSerializer):
 # EXPENSE SERIALIZER
 # ============================
 class ExpenseSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Expense
         fields = ['id', 'user', 'amount', 'category', 'category_name', 'description', 'date']
         read_only_fields = ['user']  # Ensures users can't create expenses for others
+
+    def get_category_name(self, obj):
+        return obj.category.name if obj.category else "No Category"
 
 
 # ============================
@@ -61,18 +64,23 @@ class ExpenseSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'type']
-        read_only_fields = ['user']  # Only the owner (user) can manage their categories
+        fields = ['id', 'name', 'user', 'type']
+        read_only_fields = ['user']  # Link to user automatically in view
+
 
 
 # ============================
 # INCOME SERIALIZER
 # ============================
 class IncomeSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Income
         fields = ['id', 'user', 'amount', 'category', 'category_name', 'description', 'date']
         read_only_fields = ['user']  # Prevent users from assigning income to others
+
+    def get_category_name(self, obj):
+        return obj.category.name if obj.category else "No Category"
+
 
