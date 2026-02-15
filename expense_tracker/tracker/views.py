@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Sum
 from django.utils import timezone
+from django.http import HttpResponse
 from datetime import timedelta
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -22,6 +23,10 @@ from .filters import ExpenseFilter, IncomeFilter
 # ==========================================================
 # 🔐 AUTHENTICATION & USER REGISTRATION VIEWS
 # ==========================================================
+
+
+def home(request):
+    return HttpResponse("Expense Tracker API is running")
 
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]

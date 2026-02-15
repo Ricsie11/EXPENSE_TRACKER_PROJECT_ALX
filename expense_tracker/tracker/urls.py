@@ -5,12 +5,15 @@ from .views import (
     ExpenseListCreateView, ExpenseDetailView,
     IncomeListCreateView, IncomeDetailView,
     CategoryListCreateView, CategoryDetailView,
-    SummaryView, CategorySummaryView
+    SummaryView, CategorySummaryView,
+    home
 )
 
 
 #Write your urls here
 urlpatterns = [
+    path("", home),
+
     #Signup & Login Endpoints
     path("signup/", SignupAPIView.as_view(), name='sign-up'),
     path("login/", TokenObtainPairView.as_view(), name='token-obtain-pair'),
