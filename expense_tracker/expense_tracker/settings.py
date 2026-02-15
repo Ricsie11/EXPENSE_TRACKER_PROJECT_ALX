@@ -28,10 +28,10 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 # Allow all hosts (you can later restrict this to your Render domain)
-ALLOWED_HOSTS = ["expense-tracker-ninm.onrender.com"]
+ALLOWED_HOSTS = ["expense-tracker-2-a5y7.onrender.com"]
 
 # Allow Render domain for CSRF protection
-CSRF_TRUSTED_ORIGINS = ["https://expense-tracker-ninm.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://expense-tracker-2-a5y7.onrender.com"]
 
 # ===========================
 # 🧩 INSTALLED APPS

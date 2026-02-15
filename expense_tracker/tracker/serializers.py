@@ -47,9 +47,11 @@ class UserSerializer(serializers.ModelSerializer):
 # EXPENSE SERIALIZER
 # ============================
 class ExpenseSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source='category.name', read_only=True)
+
     class Meta:
         model = Expense
-        fields = ['id', 'user', 'amount', 'category', 'description', 'date']
+        fields = ['id', 'user', 'amount', 'category', 'category_name', 'description', 'date']
         read_only_fields = ['user']  # Ensures users can't create expenses for others
 
 
@@ -67,7 +69,10 @@ class CategorySerializer(serializers.ModelSerializer):
 # INCOME SERIALIZER
 # ============================
 class IncomeSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source='category.name', read_only=True)
+
     class Meta:
         model = Income
-        fields = ['id', 'user', 'amount', 'category', 'description', 'date']
+        fields = ['id', 'user', 'amount', 'category', 'category_name', 'description', 'date']
         read_only_fields = ['user']  # Prevent users from assigning income to others
+
