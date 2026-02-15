@@ -125,11 +125,15 @@ USE_I18N = True
 USE_TZ = True
 
 # ===========================
-# 📦 STATIC FILES
+# 📦 STATIC & MEDIA FILES
 # ===========================
 # Only needed for admin assets
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # ===========================
 # 🔐 REST FRAMEWORK & JWT

@@ -1,6 +1,15 @@
-from rest_framework import serializers
-from .models import Expense, Category, Income
+from .models import Expense, Category, Income, Profile
 from django.contrib.auth.models import User
+from rest_framework import serializers
+
+
+# ============================
+# PROFILE SERIALIZER
+# ============================
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['profile_pic']
 
 
 # ============================
@@ -38,9 +47,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 # SIMPLE USER DATA SERIALIZER
 # ============================
 class UserSerializer(serializers.ModelSerializer):
+    profile_pic = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name']
+        fields = ['id', 'username', 'email', 'first_name', 'profile_pic']
+
+    def get_profile_pic(self, obj):
+        if hasattr(obj, 'profile') and obj.profile.profile_pic:
+            return obj.profile.profile_pic.url
+        return None
 
 
 # ============================

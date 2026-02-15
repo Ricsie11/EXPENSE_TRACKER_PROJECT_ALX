@@ -1,125 +1,84 @@
 # Expense Tracker (Django REST API)
 
-A simple personal expense/income tracker built with Django REST Framework. The API supports user registration, JWT authentication, CRUD operations for expenses, incomes and categories, and summary endpoints (total income, total expense, balance, and category breakdown).
+A premium, modern personal expense/income tracker backend built with Django REST Framework. The API supports secure user management, JWT authentication, and comprehensive financial tracking.
 
-## Features
+## ✨ Features
 
-- User registration with JWT token generation (access & refresh)
-- JWT-based authentication for protected endpoints
-- CRUD for Expenses, Incomes and Categories
-- Summary endpoints: overall balance and category-wise breakdown
-- Admin site with models registered
+- **User Authentication**: Secure signup and login using JWT (JSON Web Tokens).
+- **Profile Management**: User profiles with profile picture upload support.
+- **Financial Tracking**: CRUD operations for Expenses, Incomes, and user-defined Categories.
+- **Dynamic Summaries**: Real-time financial overviews (Daily, Weekly, Monthly, Yearly, and Total).
+- **Category Breakdown**: Detailed visualization data for spending patterns.
+- **Robust API**: Enhanced error handling and data validation to prevent 500 errors.
 
-## Stack & Dependencies
+## 🛠️ Stack & Dependencies
 
-- Python 3.11+ (project was generated with Django 5.2.6)
-- Django
-- Django REST Framework
-- djangorestframework-simplejwt
-- django-filter
-- dj-database-url (used for parsing DATABASE_URL in settings)
-- python-decouple (for environment config)
+- **Python 3.11+**
+- **Django**: Core web framework.
+- **Django REST Framework**: For building the robust API.
+- **SimpleJWT**: Secure authentication layer.
+- **Pillow**: Image processing for profile pictures.
+- **Django Filter**: For dynamic transaction filtering.
+- **dj-database-url & python-decouple**: For secure environment management.
 
-## Environment variables
+## ⚙️ Environment Variables
 
-The project expects the following environment variables (used in `settings.py` via `python-decouple`):
+Create a `.env` file in the root directory (where `manage.py` is):
 
-- SECRET_KEY — Django secret key
-- DEBUG — set to `True` or `False` (default: `False`)
-- DATABASE_URL — database connection URL (e.g., for Postgres on Render)
 
-If you deploy to Render, the settings file already allows Render's domain in `CSRF_TRUSTED_ORIGINS`.
+## 🚀 Quick Setup (Local)
 
-## Quick setup (local)
+1. **Clone and Setup Virtual Environment**:
 
-This project doesn't include a lockfile in the repo root, so use one of the approaches below depending on your environment.
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   pip install -r requirements.txt
+   ```
 
-Using pipenv (if you prefer):
+2. **Run Migrations**:
 
-```powershell
-pipenv install --python 3.11 django djangorestframework djangorestframework-simplejwt django-filter python-decouple dj-database-url
-pipenv shell
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
+   ```powershell
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-Using a virtualenv + pip:
+3. **Start the Server**:
+   ```powershell
+   python manage.py runserver
+   ```
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install --upgrade pip
-pip install django djangorestframework djangorestframework-simplejwt django-filter python-decouple dj-database-url
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
+## 🔗 API Endpoints
 
-Replace the package list above with any project-specific requirements if you have a `requirements.txt` or `Pipfile` elsewhere.
+The API is base-routed at `api/v1.0/`.
 
-## Running tests
+### Authentication & Profile
 
-No tests were detected in the project apart from an empty `tracker/tests.py`. Add tests under the `tracker/tests.py` or `tracker/tests/` and run:
+- `POST api/v1.0/signup/` — Register a new user.
+- `POST api/v1.0/login/` — Standard JWT login.
+- `GET api/v1.0/users/me/` — Get authenticated user details.
+- `POST api/v1.0/profile/update/` — Upload/update profile picture (Multipart/Form-Data).
+
+### Financial Records
+
+- `GET/POST api/v1.0/expenses/` — Manage expenses.
+- `GET/POST api/v1.0/incomes/` — Manage incomes.
+- `GET/POST api/v1.0/categories/` — Manage custom categories.
+- `GET/PUT/DELETE api/v1.0/expenses/<id>/` — Detail expense management.
+
+### Summaries & Charts
+
+- `GET api/v1.0/summary/` — Overall financial totals (Income/Expense/Balance).
+- `GET api/v1.0/category/summary/` — Spending breakdown by category for charts.
+
+## 🧪 Testing
+
+Run standard Django tests:
 
 ```powershell
 python manage.py test
 ```
 
-## API endpoints
+## 📝 Deployment
 
-The application mounts the tracker API under `api/v1.0/`.
-
-Authentication:
-
-- POST `api/v1.0/signup/` — register a new user. Request body: {"username":"...","email":"...","password":"..."}. Returns `refresh` and `access` tokens.
-- POST `api/v1.0/login/` — obtain JWT tokens (use `rest_framework_simplejwt.views.TokenObtainPairView`). Body: {"username":"...","password":"..."}
-- POST `api/v1.0/token/refresh/` — refresh access token using the refresh token.
-
-Expenses:
-
-- GET `api/v1.0/expenses/` — list authenticated user's expenses (paginated)
-- POST `api/v1.0/expenses/` — create expense ({"amount","category","description","date"})
-- GET/PUT/DELETE `api/v1.0/expenses/<id>/` — retrieve, update or delete a specific expense
-
-Incomes:
-
-- GET `api/v1.0/incomes/` — list incomes
-- POST `api/v1.0/incomes/` — create income
-- GET/PUT/DELETE `api/v1.0/incomes/<id>/` — retrieve, update or delete income
-
-Categories:
-
-- GET `api/v1.0/categories/` — list categories
-- POST `api/v1.0/categories/` — create category ({"name","type"})
-- GET/PUT/DELETE `api/v1.0/categories/<id>/` — manage a category
-
-Summaries:
-
-- GET `api/v1.0/summary/` — returns total_income, total_expense, balance for the authenticated user
-- GET `api/v1.0/category/summary/` — returns income and expense totals broken down by category
-
-Admin:
-
-- GET `admin/` — Django admin site (create a superuser to access)
-- GET `admin/` — Django admin site (create a superuser to access)
-
-## Example: Register and use access token
-
-1. Register (curl example):
-
-```powershell
-curl -X POST "http://127.0.0.1:8000/api/v1.0/signup/" -H "Content-Type: application/json" -d '{"username":"alice","email":"alice@example.com","password":"secretpass"}'
-```
-
-2. Use returned `access` token to call protected endpoints:
-
-```powershell
-curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://127.0.0.1:8000/api/v1.0/expenses/
-```
-
-## Notes & suggestions
-
-- Security: The `create-admin/` view creates a default admin with a hard-coded password; remove or protect it before deploying to production.
-- Add automated tests for serializers, views, and permission checks.
-- Add request/response examples and a Postman or OpenAPI/Swagger spec for easier integration.
+The project is configured for deployment on **Render**. Ensure you set the `DATABASE_URL` and `SECRET_KEY` in the Render environment settings. For media files (profile pictures), a persistent disk or cloud storage (AWS S3/Cloudinary) is recommended for production.

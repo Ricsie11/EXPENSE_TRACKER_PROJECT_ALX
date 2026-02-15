@@ -6,7 +6,7 @@ from .views import (
     IncomeListCreateView, IncomeDetailView,
     CategoryListCreateView, CategoryDetailView,
     SummaryView, CategorySummaryView,
-    home, UserProfileView
+    home, UserProfileView, ProfileUpdateView
 )
 
 
@@ -19,6 +19,7 @@ urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name='token-obtain-pair'),
     path("token/refresh/", TokenRefreshView.as_view(), name='token-refresh'),
     path("users/me/", UserProfileView.as_view(), name='user-profile'),
+    path("profile/update/", ProfileUpdateView.as_view(), name='profile-update'),
 
 
     #Expense Endpoints

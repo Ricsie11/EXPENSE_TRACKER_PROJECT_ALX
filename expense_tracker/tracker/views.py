@@ -64,6 +64,18 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
 
+class ProfileUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        profile = request.user.profile
+        if 'profile_pic' in request.FILES:
+            profile.profile_pic = request.FILES['profile_pic']
+            profile.save()
+            return Response({'profile_pic': profile.profile_pic.url}, status=status.HTTP_200_OK)
+        return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # ==========================================================
 # 💸 EXPENSE VIEWS
 # ==========================================================
