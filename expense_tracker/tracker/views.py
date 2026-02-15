@@ -14,7 +14,8 @@ from .serializers import (
     ExpenseSerializer, 
     CategorySerializer, 
     IncomeSerializer, 
-    RegisterSerializer
+    RegisterSerializer,
+    UserSerializer
 )
 from .models import Income, Expense
 from .filters import ExpenseFilter, IncomeFilter
@@ -53,6 +54,14 @@ class SignupAPIView(APIView):
         except Exception as e:
             # Catch any unexpected errors (e.g., DB or serialization issues)
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
 
 
 # ==========================================================

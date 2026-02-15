@@ -55,7 +55,10 @@ class ExpenseSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']  # Ensures users can't create expenses for others
 
     def get_category_name(self, obj):
-        return obj.category.name if obj.category else "No Category"
+        try:
+            return obj.category.name if obj.category else "No Category"
+        except Exception:
+            return "No Category"
 
 
 # ============================

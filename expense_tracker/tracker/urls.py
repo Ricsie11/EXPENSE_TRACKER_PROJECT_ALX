@@ -6,7 +6,7 @@ from .views import (
     IncomeListCreateView, IncomeDetailView,
     CategoryListCreateView, CategoryDetailView,
     SummaryView, CategorySummaryView,
-    home
+    home, UserProfileView
 )
 
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path("signup/", SignupAPIView.as_view(), name='sign-up'),
     path("login/", TokenObtainPairView.as_view(), name='token-obtain-pair'),
     path("token/refresh/", TokenRefreshView.as_view(), name='token-refresh'),
+    path("users/me/", UserProfileView.as_view(), name='user-profile'),
+
 
     #Expense Endpoints
     path('expenses/', ExpenseListCreateView.as_view(), name='expense-list-create'),
