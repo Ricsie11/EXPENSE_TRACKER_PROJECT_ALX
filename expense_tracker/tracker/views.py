@@ -73,14 +73,21 @@ class ProfileUpdateView(APIView):
             profile, created = Profile.objects.get_or_create(user=request.user)
             
             if 'profile_pic' in request.FILES:
-                profile.profile_pic = request.FILES['profile_pic']
+                file = request.FILES['profile_pic']
+                print(f"Received file: {file.name}, size: {file.size}, content_type: {file.content_type}")
+                
+                profile.profile_pic = file
                 profile.save()
                 
                 # Build the full URL for the profile picture
                 pic_url = request.build_absolute_uri(profile.profile_pic.url) if profile.profile_pic else None
+                print(f"Saved successfully. URL: {pic_url}")
                 return Response({'profile_pic': pic_url}, status=status.HTTP_200_OK)
             return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            import traceback
+            print(f"Error in ProfileUpdateView: {str(e)}")
+            print(traceback.format_exc())
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

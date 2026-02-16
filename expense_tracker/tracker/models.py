@@ -97,12 +97,12 @@ class Income(models.Model):
 # ============================
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    profile_pic = models.FileField(upload_to='profile_pics/', null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
-# Signals to automatically create/update Profile when User is created/updated
+# Signals to automatically create Profile when User is created
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -110,6 +110,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    if not hasattr(instance, 'profile'):
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+    # Only save if profile exists
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
