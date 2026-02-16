@@ -17,7 +17,7 @@ from .serializers import (
     RegisterSerializer,
     UserSerializer
 )
-from .models import Income, Expense
+from .models import Income, Expense, Profile
 from .filters import ExpenseFilter, IncomeFilter
 
 
