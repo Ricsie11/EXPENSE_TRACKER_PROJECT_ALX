@@ -68,12 +68,17 @@ class ProfileUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        profile = request.user.profile
-        if 'profile_pic' in request.FILES:
-            profile.profile_pic = request.FILES['profile_pic']
-            profile.save()
-            return Response({'profile_pic': profile.profile_pic.url}, status=status.HTTP_200_OK)
-        return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Use get_or_create to ensure the profile exists for the user
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            
+            if 'profile_pic' in request.FILES:
+                profile.profile_pic = request.FILES['profile_pic']
+                profile.save()
+                return Response({'profile_pic': profile.profile_pic.url}, status=status.HTTP_200_OK)
+            return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # ==========================================================
